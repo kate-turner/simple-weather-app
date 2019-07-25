@@ -19,3 +19,4 @@ Here's a list of priorities for you. Please don't spend more than 2-3 hours. We'
 1. Visual Styles
 
 When you have completed this, please push to a repo on github and either send us a public link or add @mckernanin + @danhannigan as collaborators if you would rather make the repository private.
+# simple-weather-app
