@@ -1,43 +1,66 @@
 import React from "react";
-import DataDisplay from "../DataDisplay";
+import "./styles.css";
+import { Container, Col, Row } from "react-bootstrap";
+import CurrentDisplay from "../CurrentDisplay";
 import ExtendedForecast from "../ExtendedForecast";
-import WeatherInput from "../WeatherInput";
-import { toFahrenheit } from "../../utils/conversions";
+import LocationForm from "../LocationForm";
+import ErrorPage from "../ErrorPage.js";
 
 class App extends React.Component {
   state = {
     city: undefined,
-    weatherData: undefined
+    weatherData: undefined,
+    error: undefined
   };
 
   getWeather = async event => {
     event.preventDefault();
-    const city = event.target.elements.city.value;
-    const api_call = await fetch(`/api/location/search/?query=${city}`);
-    const response = await api_call.json();
-    const woeid = response[0].woeid;
-    const api_callWoeid = await fetch(`/api/location/${woeid}/`);
-    const response2 = await api_callWoeid.json();
-    if (city) {
+    try {
+      const city = event.target.elements.city.value;
+      const api_call = await fetch(`/api/location/search/?query=${city}`);
+      const response = await api_call.json();
+      const woeid = response[0].woeid;
+      const api_callWoeid = await fetch(`/api/location/${woeid}/`);
+      const response2 = await api_callWoeid.json();
       this.setState({
-        weatherData: response2
+        city: city,
+        weatherData: response2,
+        error: ""
+      });
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        city: undefined,
+        weatherData: undefined,
+        error: "Something went wrong"
       });
     }
-    // const temperatureValue = response2.consolidated_weather[0].max_temp;
-    // const temperatureConversion = toFahrenheit(temperatureValue);
-    // console.log(temperatureConversion);
   };
 
   render() {
     return (
-      <div className="App">
-        <WeatherInput getWeather={this.getWeather} />
-        {this.state.weatherData && (
-          <div>
-            <DataDisplay weatherData={this.state.weatherData} />
-            <ExtendedForecast weatherData={this.state.weatherData} />
-          </div>
-        )}
+      <div>
+        <LocationForm getWeather={this.getWeather} />
+        <div className="wrapper">
+          <Container fluid>
+            <Row>
+              <Col lg={12}>
+                <div className="main">
+                  {this.state.weatherData && (
+                    <div>
+                      <CurrentDisplay
+                        weatherData={this.state.weatherData}
+                        city={this.state.city}
+                      />
+                      <ExtendedForecast weatherData={this.state.weatherData} />
+                    </div>
+                  )}
+                  {this.state.error && <ErrorPage error={this.state.error} />}
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     );
   }

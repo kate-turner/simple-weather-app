@@ -1,17 +1,28 @@
-.App {
+.search-bar {
+  width: 10rem;
+  margin-top: 6px;
+}
+
+.search-button {
+  margin-left: 6px;
+  margin-top: 6px;
+}
+
+.main {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: 100vh;
+  padding-top: 30px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  background: url("../../images/background.jpg") center center no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #000;
 }
